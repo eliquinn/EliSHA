@@ -20,17 +20,18 @@ num sigma(num x, num y) {
 }
 
 
-void hash(char * input){
+void hash(char * input, num rounds){
 
     num hash[4];
 
     num isize = strlen(input);
 
-    for (num i = 0; i < 10; i++) {
-        hash[i % 4] = (k[i] * hash[i % 4] + input[isize % i]);
+    for (num i = 0; i < rounds; i++) {
+        hash[i % 4] = (k[i % 64] * hash[i % 4] + input[isize % i]);
         hash[i % 4] = sigma(hash[i % 4], 7);
     }    
 
+    //print the hash
     for (int a = 0; a < 4; a++) {
         printf("%x", hash[a]);
     }
@@ -41,14 +42,20 @@ void hash(char * input){
 
 int main(void) {
 
-    hash("12345");
+    hash("12345", 10);
 
-    hash("22345");
+    hash("22345", 10);
 
-    hash("12344");
+    hash("12344", 10);
 
-    hash("The quick brown fox jumped over the lazy dog");
-    hash("The quick brown fox jumped over the lazy dof");
+    hash("The quick brown fox jumped over the lazy dog", 10);
+    hash("The quick brown fox jumped over the lazy dof", 10);
+
+    
+    for (int i = 1; i < 100; i++) {
+        printf("Round %d: ", i);
+        hash("fart",i); 
+    }
     return 0;
 }
 
