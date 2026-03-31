@@ -1,20 +1,10 @@
+#include <stdlib.h>
 #include <stdio.h>
 #include <stdint.h>
+#include <string.h>
 
 typedef uint32_t num;
 
-/*
-num h0, h1, h2, h3, h4, h5, h6, h7;
-
-h0 = 0x6a09e667;
-h1 = 0xbb67ae85;
-h2 = 0x3c6ef372;
-h3 = 0xa54ff53a;
-h4 = 0x510e527f;
-h5 = 0x9b05688c;
-h6 = 0x1f83d9ab;
-h7 = 0x5be0cd19;
-*/
 
 num k[64] = { 0x428a2f98, 0x71374491, 0xb5c0fbcf, 0xe9b5dba5, 0x3956c25b, 0x59f111f1, 0x923f82a4, 0xab1c5ed5,
    0xd807aa98, 0x12835b01, 0x243185be, 0x550c7dc3, 0x72be5d74, 0x80deb1fe, 0x9bdc06a7, 0xc19bf174,
@@ -25,13 +15,40 @@ num k[64] = { 0x428a2f98, 0x71374491, 0xb5c0fbcf, 0xe9b5dba5, 0x3956c25b, 0x59f1
    0x19a4c116, 0x1e376c08, 0x2748774c, 0x34b0bcb5, 0x391c0cb3, 0x4ed8aa4a, 0x5b9cca4f, 0x682e6ff3,
    0x748f82ee, 0x78a5636f, 0x84c87814, 0x8cc70208, 0x90befffa, 0xa4506ceb, 0xbef9a3f7, 0xc67178f2 };
 
-int main() {
-    num test = 0;
-
-    for (num i = 0; i < 64; i++) {
-        test = test ^ k[i];
-        printf("%u\n", test);
-    }
-
-
+num sigma(num x, num y) {
+    return (x >> y) | (x << (25-y));
 }
+
+
+void hash(char * input){
+
+    num hash[4];
+
+    num isize = strlen(input);
+
+    for (num i = 0; i < 10; i++) {
+        hash[i % 4] = (k[i] * hash[i % 4] + input[isize % i]);
+        hash[i % 4] = sigma(hash[i % 4], 7);
+    }    
+
+    for (int a = 0; a < 4; a++) {
+        printf("%x", hash[a]);
+    }
+    printf("\n");
+}
+
+
+
+int main(void) {
+
+    hash("12345");
+
+    hash("22345");
+
+    hash("12344");
+
+    hash("The quick brown fox jumped over the lazy dog");
+    hash("The quick brown fox jumped over the lazy dof");
+    return 0;
+}
+
