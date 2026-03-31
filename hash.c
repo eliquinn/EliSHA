@@ -42,20 +42,23 @@ void hash(char * input, num rounds){
 
 int main(void) {
 
+    printf("Warning: it changes for some reason\n");
+
     hash("12345", 10);
 
     hash("22345", 10);
 
     hash("12344", 10);
 
-    hash("The quick brown fox jumped over the lazy dog", 10);
-    hash("The quick brown fox jumped over the lazy dof", 10);
+    hash("The quick brown fox jumped over the lazy dog", 100);
+    hash("The quick brown fox jumped over the lazy dof", 100);
 
-    
-    for (int i = 1; i < 100; i++) {
+/*    
+    for (int i = 1; i < 1000; i++) {
         printf("Round %d: ", i);
         hash("fart",i); 
     }
+*/ 
     return 0;
 }
 
